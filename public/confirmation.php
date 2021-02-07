@@ -1,16 +1,18 @@
   <?php
-
-
+  // Page Title and Description
   $title = "AMADA | Confirmation";
   $desc = "we offer many categories of products for many brands with high quality to help you get your order in an easy and simple way.";
+  session_start();
   require("includes/public_header.php");
   if (!isset($_SESSION["user"])) {
     header("location:cart.php");
   }
+  // When Redirecting from PayPal
   if (isset($_SESSION['order_products'])) {
     unset($_SESSION["order_products"]);
     echo "<script> document.getElementById('cart_count').innerHTML= 0 </script>";
   }
+  // Calculating the total price of the order
   $total_price = 0;
   function calculate_total($price)
   {
@@ -19,7 +21,8 @@
       $_SESSION["total_price"] = $GLOBALS["total_price"];
     }
   }
-  if (isset($_SESSION["last_order"])) {
+  // Getting the inserted order info
+  if(isset($_SESSION["last_order"])) {
     $query  = "SELECT * FROM orders WHERE order_id={$_SESSION['last_order']}";
     $result = mysqli_query($conn, $query);
     $order  = mysqli_fetch_assoc($result);
@@ -87,8 +90,15 @@
                 </thead>
                 <?php
                 while ($order_products = mysqli_fetch_assoc($result2)) {
-                  $quantity = $order_products["quantity"];
-                  $product_total_price = ($order_products["product_price"] - ($order_products["product_price"] * $order_products["discount"])) * $quantity;
+                  $quantity            = $order_products["quantity"];
+                  $price               = $order_products["product_price"];
+                  $discount            = $order_products["discount"];
+                  if($discount != 1){
+                    $product_total_price = ($price   - ($price  * $discount)) * $quantity;
+                  }
+                  else{
+                    $product_total_price = $price * $quantity; 
+                  }
                   calculate_total($product_total_price);
                   echo "
                   <tbody>

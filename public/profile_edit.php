@@ -11,7 +11,7 @@ if(!isset($_SESSION['user'])){
 }else{
     $user_id=$_SESSION['user'];
 }
-// query to marge 4 Tables 
+// query to marge 4 Tables
 
 $user_date="
 SELECT

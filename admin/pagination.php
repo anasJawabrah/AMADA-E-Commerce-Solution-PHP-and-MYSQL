@@ -1,4 +1,4 @@
-<nav class="d-flex justify-content-center text-center">
+<nav class="d-flex justify-content-center text-center mt-3">
     <ul class="pagination" style="width:100%">
         <li class="page-item" style="width:30%"><a class="page-link" href="?pageno=1">First</a></li>
         <li class="page-item <?php if ($pageno <= 1) {

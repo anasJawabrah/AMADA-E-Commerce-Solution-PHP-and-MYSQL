@@ -1,4 +1,5 @@
 <?php
+//Page Title and Description
 $title = "AMADA | Checkout";
 $desc = "we offer many categories of products for many brands with high quality to help you get your order in an easy and simple way.";
 require_once("../db_connection.php");
@@ -8,6 +9,7 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION["user"]) || !isset($_SESSION["order_products"])) {
   header("location:cart.php");
 }
+// Calculating the total price of the order
 $total_price = 0;
 function calculate_total($price)
 {
@@ -16,10 +18,11 @@ function calculate_total($price)
     $_SESSION["total_price"] = $GLOBALS["total_price"];
   }
 }
+// Saving Data in database when placing order
 if (isset($_POST["submit"])) {
   if (isset($_POST["payment"])) {
     if (isset($_SESSION["order_products"])) {
-      // Insert into orders tabel
+      // Insert into orders table
       $customer_id = $_SESSION["user"];
       $total       = $_SESSION["total_price"];
       $order_type  = $_POST["payment"];
@@ -27,11 +30,13 @@ if (isset($_POST["submit"])) {
       mysqli_query($conn, $query);
       $last_id     = mysqli_insert_id($conn);
       $_SESSION["last_order"] = $last_id;
+      // Insert insto order_products table
       foreach ($_SESSION["order_products"] as $product => $value) {
         $quantity  = $_SESSION["order_products"]["$product"]["quantity"];
         $query2    = "INSERT INTO order_products(order_id,product_id,quantity) VALUES($last_id,$product,$quantity)";
         mysqli_query($conn, $query2);
       }
+      //Unsetting the order_products session after completing the order
       unset($_SESSION["order_products"]);
       header("location:confirmation.php");
     }
@@ -56,23 +61,15 @@ require("includes/public_header.php");
 
 <!-- ================ end banner area ================= -->
 
-<!-- Paybal -->
-
+<!--================Checkout Area =================-->
 <?php
+//PayPal
 $item_name = 1;
 $item_number = 1;
 $amount = 1;
 $quantity = 1;
 
 
-
-?>
-
-
-
-<!-- Paybal -->
-<!--================Checkout Area =================-->
-<?php
 $query  = "SELECT * FROM customers WHERE customer_id={$_SESSION['user']}";
 $result = mysqli_query($conn, $query);
 $row    = mysqli_fetch_assoc($result);
@@ -137,18 +134,16 @@ $row    = mysqli_fetch_assoc($result);
                       $product_total_price = $_SESSION["order_products"][$row["product_id"]]["total"];
                       calculate_total($_SESSION["order_products"][$row["product_id"]]["total"]);
                       echo '
-                                  <tbody>
-                                    <td>' . $row["product_name"] . '</td>
-                                    <td class="text-center"> x ' . $quantity . '</td>
-                                    <td class="text-center">' . $product_total_price . '</td>
-                                  </tbody>
-                                  
-                                  <input id ="item_" type="hidden" name="item_name_' . $item_name . '" value="' . $row["product_name"] . '">
-                                  <input type="hidden" name="item_number_' . $item_number . '" value="' . $row["product_id"] . '">
-                                  <input type="hidden" name="amount_' . $amount . '" value="' . $row["product_price"] . '">
-                                  <input type="hidden" name="quantity_' . $quantity . '" value="' . $_SESSION["order_products"][$row["product_id"]]["quantity"] . '">';
-
-
+                        <tbody>
+                          <td>' . $row["product_name"]. '</td>
+                          <td class="text-center"> x ' . $quantity . '</td>
+                          <td class="text-center">'. $product_total_price . '</td>
+                        </tbody>
+                        <input id ="item_" type="hidden" name="item_name_' . $item_name . '" value="' . $row["product_name"] . '">
+                        <input type="hidden" name="item_number_' . $item_number . '" value="' . $row["product_id"] . '">
+                        <input type="hidden" name="amount_' . $amount . '" value="' . $row["product_price"] . '">
+                        <input type="hidden" name="quantity_' . $quantity . '" value="' . $_SESSION["order_products"][$row["product_id"]]["quantity"] . '">
+                      ';
                       $item_name++;
                       $item_number++;
                       $amount++;
@@ -187,24 +182,18 @@ $row    = mysqli_fetch_assoc($result);
           </div>
         </div>
       </div>
-  </div>
   </form>
-  </div>
+</div>
 </section>
 <script script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
 </script>
 <script>
   var dataform;
-
   function paypal() {
-
     if ($("#f-option2").is(':checked')) {
-
       $("#payment").attr("action", "https://www.sandbox.paypal.com/cgi-bin/websc");
     }
     $("#payment").submit();
-
-
   }
 </script>
 <!--================End Checkout Area =================-->

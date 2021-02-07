@@ -101,7 +101,6 @@ if ((isset($_SESSION['user'])))
 						<form class="row login_form" action="" method="POST" id="register_form" >
 
 							<div class="col-md-12 form-group">
-								<label for="">Email</label>
 								<input type="text" class="form-control" id="email" name="email" 
 								value="<?php echo $email;?>"
 								placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
@@ -109,7 +108,6 @@ if ((isset($_SESSION['user'])))
 							</div>
 							
              				<div class="col-md-12 form-group">
-								<label for="">Password</label>
 								<input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<?php echo $password;?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'"><span style="color: red;" class="error "> <?php echo $passwordErr;?></span>
             				</div>
 							<div class="col-md-12 form-group">
