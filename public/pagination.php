@@ -1,7 +1,9 @@
 <nav class="d-flex justify-content-center text-center">
     <ul class="pagination" style="width:100%">
         <li class="page-item" style="width:30%"><a class="page-link" href="?pageno=1">First</a></li>
-        <li class="page-item <?php if ($pageno <= 1) {
+        <li class="page-item 
+        
+        <?php if ($pageno <= 1) {
                                     echo 'disabled';
                                 } ?>" style="width:20%">
             <a class="page-link" href="<?php if ($pageno <= 1) {
