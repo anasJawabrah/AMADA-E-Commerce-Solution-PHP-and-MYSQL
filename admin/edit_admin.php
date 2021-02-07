@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
         $path        = '../images/'.$admin_image;
         move_uploaded_file($tmp_name,$path);
     } else {
-        $admin_image = $admin_image_src;
+        $path = $admin_image_src;
     }
     $query = "UPDATE admins SET admin_name    ='$fullname',
                                 admin_email ='$email',
@@ -65,7 +65,6 @@ include('includes/admin_header.php'); ?>
                                 <div class="form-group">
                                     <label class="control-label mb-1">Admin Image</label>
                                     <input name="image" type="file" class="form-control">
-
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <button type="submit" class="btn btn-lg btn-info btn-block" style='width:30%;background-color: #384aec' name="submit">
