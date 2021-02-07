@@ -46,10 +46,8 @@
         
         // Check input errors before inserting in database
         if (empty($passwordErr) && empty($emailErr)) {
-
 			//search 
-            $query = "SELECT 
-			customer_id FROM customers
+            $query = "SELECT customer_id FROM customers
 			WHERE customer_email = '$email' AND 
 			customer_password = '$password'";
 
